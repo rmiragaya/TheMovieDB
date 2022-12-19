@@ -1,6 +1,8 @@
 package com.tapdeveloper.themoviedb.presentation.moviesList
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -30,6 +33,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.domain.model.Movie
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesLazyRow
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.PaginationLoading
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMovieCard
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMoviesColumnTitle
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.SubscribedMoviesRowTitle
 import com.tapdeveloper.themoviedb.presentation.navigation.Screen
 import com.tapdeveloper.themoviedb.ui.theme.Purple500
 import com.tapdeveloper.themoviedb.ui.theme.Shapes
@@ -60,104 +68,37 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                 FavoritesLazyRow(modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth(),
-                    movies = emptyList(),
-                    isLoading = false,
+                    movies = viewModel.favoritesMovies,
+                    isLoading = viewModel.isLoadingRow,
                     onClickMovie = { movieSelected ->
                         viewModel.selectMovie(movieSelected)
                         navController.navigate(Screen.MovieDetailScreen.route)
                     })
             }
-        }
-    }
-}
-
-@Composable
-fun SubscribedMoviesRowTitle() {
-    Text(
-        modifier = Modifier.padding(16.dp),
-        text = "Favoritos"
-    )
-}
-
-@Composable
-fun FavoritesLazyRow(
-    modifier: Modifier,
-    movies: List<Movie>,
-    isLoading: Boolean,
-    onClickMovie: (Movie) -> Unit
-) {
-    if (movies.isEmpty() && !isLoading) {
-        EmptySubscriptionList()
-    } else {
-        LazyRow(modifier = modifier) {
             item {
-                EmptySubscriptionList()
+                RecommendedMoviesColumnTitle()
             }
-            if (isLoading) {
-                item {
-                    Box(Modifier.fillMaxSize()) {
-                        CircularProgressIndicator()
-                    }
+
+            // todo las pelis
+
+            itemsIndexed(viewModel.moviesResponse.movies) {  index, movie ->
+                if (viewModel.shouldFetchMoreMovies(index))
+                    viewModel.loadNextMovies()
+
+                RecommendedMovieCard(movie) {
+                    viewModel.selectMovie(movie)
+                    navController.navigate(Screen.MovieDetailScreen.route)
                 }
-            } else {
-                items(movies) { movie ->
-                    SubscribedMovieCard(movie, onClickMovie)
-                    Spacer(modifier = Modifier.width(12.dp))
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            item {
+                if (viewModel.isLoadingColum) {
+                    PaginationLoading()
                 }
             }
-        }
-    }
 
-}
-
-@Composable
-fun EmptySubscriptionList() {
-    Card(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth()
-            .height(140.dp),
-        shape = Shapes.medium,
-        backgroundColor = White,
-        elevation = 4.dp
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Aun no tienes seleccionados favoritos",
-                style = MaterialTheme.typography.body1,
-                color = Purple500
-            )
         }
     }
 }
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun SubscribedMovieCard(movie: Movie, onClick: (Movie) -> Unit) {
-    Card(
-        modifier = Modifier
-            .width(92.dp)
-            .height(152.dp),
-        shape = Shapes.medium,
-        elevation = 4.dp,
-        onClick = {
-            onClick(movie)
-        }
-    ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(stringResource(id = R.string.image_base_url) + movie.posterPath)
-                .crossfade(true)
-                .build(),
-            placeholder = null,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-

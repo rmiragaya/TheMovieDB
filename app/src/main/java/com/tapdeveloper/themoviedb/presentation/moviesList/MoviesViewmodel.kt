@@ -30,6 +30,11 @@ class MoviesViewmodel @Inject constructor(
     var endReached by mutableStateOf(false)
     private var pageKey: Int? = 1
 
+    /** Observables for favorites*/
+    var favoritesMovies by mutableStateOf(listOf<Movie>())
+    var isLoadingRow by mutableStateOf(false)
+    var rowError by mutableStateOf<String?>(null)
+
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         columnError = throwable.message
     }

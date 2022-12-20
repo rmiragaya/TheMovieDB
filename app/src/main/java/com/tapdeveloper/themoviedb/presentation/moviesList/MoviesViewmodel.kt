@@ -39,7 +39,7 @@ class MoviesViewmodel @Inject constructor(
         columnError = throwable.message
     }
 
-    private val paginator = DefaultPaginator<Int?, Movie>(
+    private val paginator = DefaultPaginator(
         initialKey = pageKey,
         onLoadUpdated = {
             isLoadingColum = it

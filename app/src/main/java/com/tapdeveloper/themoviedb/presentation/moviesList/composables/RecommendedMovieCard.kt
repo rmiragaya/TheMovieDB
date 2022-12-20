@@ -53,8 +53,7 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit){
             placeholder = null,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-            )
+            modifier = Modifier.fillMaxSize())
 
         Box(
             Modifier.padding(16.dp),

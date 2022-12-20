@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.tapdeveloper.themoviedb.presentation.moviesDetail.MovieDetailScreen
 import com.tapdeveloper.themoviedb.presentation.moviesList.MovieListScreen
 import com.tapdeveloper.themoviedb.presentation.moviesList.MoviesViewmodel
 
@@ -18,10 +19,7 @@ fun Navigation(
             MovieListScreen(navController = navController, viewModel = viewModel)
         }
         composable(route = Screen.MovieDetailScreen.route) {
-//            MovieDetailScreen(
-//                navController,
-//                viewModel
-//            )
+            MovieDetailScreen(navController = navController, viewModel = viewModel)
         }
     }
 }

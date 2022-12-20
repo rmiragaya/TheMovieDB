@@ -1,5 +1,6 @@
 package com.tapdeveloper.themoviedb.data.di
 
+import com.tapdeveloper.themoviedb.BuildConfig
 import com.tapdeveloper.themoviedb.data.remote.api.MovieApi
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,7 @@ object AppModule {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)
         return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/") // todo pasarlo a una string baseurl? Philip sabe como darme el context
+            .baseUrl(BuildConfig.BASE_API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
             .build()

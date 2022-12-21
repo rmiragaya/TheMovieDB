@@ -10,21 +10,17 @@ interface MovieRepository {
         page: Int?
     ): Resource<MoviesListResponse>
 
-    suspend fun getMovieDetail(
-        movieId: Long
-    ): Resource<Movie>
-
     suspend fun searchMovies(
         query: String,
         page: Int?
     ): Resource<MoviesListResponse>
 
-    suspend fun isMovieSubscribed(movie: Movie): Resource<Boolean>
+    suspend fun isMovieFavorited(movie: Movie): Resource<Boolean>
 
-    suspend fun getSubscribedMovies(): Resource<List<Movie>>
+    suspend fun getFavoritesMovies(): Resource<List<Movie>>
 
-    suspend fun subscribeMovie(movie: Movie): Boolean
+    suspend fun addMovieToFavorites(movie: Movie): Boolean
 
-    suspend fun unsubscribeMovie(movie: Movie)
+    suspend fun removeMovieFromFavorites(movie: Movie)
 
 }

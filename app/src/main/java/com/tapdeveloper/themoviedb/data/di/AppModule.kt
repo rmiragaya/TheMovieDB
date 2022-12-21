@@ -1,6 +1,9 @@
 package com.tapdeveloper.themoviedb.data.di
 
+import android.app.Application
+import androidx.room.Room
 import com.tapdeveloper.themoviedb.BuildConfig
+import com.tapdeveloper.themoviedb.data.db.MovieDatabase
 import com.tapdeveloper.themoviedb.data.remote.api.MovieApi
 import dagger.Module
 import dagger.Provides
@@ -30,5 +33,15 @@ object AppModule {
             .client(httpClient.build())
             .build()
             .create()
+    }
+
+    @Provides
+    @Singleton
+    fun providesVendorDatabase(app: Application): MovieDatabase {
+        return Room.databaseBuilder(
+            app,
+            MovieDatabase::class.java,
+            "moviesdb"
+        ).build()
     }
 }

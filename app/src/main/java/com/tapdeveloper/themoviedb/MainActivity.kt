@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.loadNextMovies()
-//        viewModel.getSubscribedMovies()
+        viewModel.getFavoritesMovies()
         setContent {
             TheMovieDBTheme {
                 Navigation(navController = rememberNavController())

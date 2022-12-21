@@ -1,5 +1,6 @@
 package com.tapdeveloper.themoviedb.data.mappers
 
+import com.tapdeveloper.themoviedb.data.db.entities.FavoritesMovieEntity
 import com.tapdeveloper.themoviedb.data.remote.dtos.MovieDto
 import com.tapdeveloper.themoviedb.domain.model.Movie
 
@@ -13,21 +14,21 @@ fun MovieDto.toMovie(): Movie =
         releaseDate = release_date
     )
 
-//fun SubscribedMovieEntity.toMovie(): Movie =
-//    Movie(
-//        id = id,
-//        posterPath = posterPath,
-//        overview = overview,
-//        title = title,
-//        releaseDate = releaseDate,
-//        wasSubscribed = true
-//    )
-//
-//fun Movie.toEntity(): SubscribedMovieEntity =
-//    SubscribedMovieEntity(
-//        id = id,
-//        posterPath = posterPath,
-//        overview = overview,
-//        title = title,
-//        releaseDate = releaseDate
-//    )
+fun FavoritesMovieEntity.toMovie(): Movie =
+    Movie(
+        id = id,
+        posterPath = posterPath,
+        overview = overview,
+        title = title,
+        releaseDate = releaseDate,
+        wasSubscribed = true
+    )
+
+fun Movie.toEntity(): FavoritesMovieEntity =
+    FavoritesMovieEntity(
+        id = id,
+        posterPath = posterPath,
+        overview = overview,
+        title = title,
+        releaseDate = releaseDate
+    )

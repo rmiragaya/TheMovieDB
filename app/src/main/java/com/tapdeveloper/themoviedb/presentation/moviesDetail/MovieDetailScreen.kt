@@ -1,5 +1,6 @@
 package com.tapdeveloper.themoviedb.presentation.moviesDetail
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,16 +15,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -67,9 +69,9 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
 
     with(viewModel) {
         // todo add scafold y sacar Box
-        Box(
+        Scaffold(
             modifier = Modifier.fillMaxSize()
-        ) {
+        ) { padding ->
             BackgroundImage(movie = selectedMovie, mainColor = mainColor) {
                 mainColor = it
             }
@@ -77,19 +79,61 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(scrollState)
+                    .padding(padding)
+                    .padding(top = 16.dp)
             ) {
-                    BackButton(
-                        modifier = Modifier
-                            .padding(top = 16.dp, start = 16.dp),
-                        onClick = { navController.popBackStack() }
-                    )
-                    MoviePoster(movie = selectedMovie)
-                    MovieTitleAndYear(selectedMovie, contentColor)
-                    MovieDescription(selectedMovie, contentColor)
+                MoviePoster(movie = selectedMovie)
+                MovieTitleAndYear(selectedMovie, contentColor)
+                MovieDescription(selectedMovie, contentColor)
+                FavoriteGradientButton(
+                    subscribed = selectedMovie.wasSubscribed,
+                    contentColor = contentColor,
+                    mainColor = mainColor,
+                    isLoading = isLoadingRow
+                ) {
+                    addOrRemoveFavorites()
+                }
             }
+            BackButton(
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 16.dp),
+                onClick = { navController.popBackStack() }
+            )
         }
     }
 
+}
+
+@Composable
+private fun FavoriteGradientButton(
+    modifier: Modifier = Modifier,
+    subscribed: Boolean,
+    contentColor: Color,
+    mainColor: Color,
+    isLoading: Boolean,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = modifier.then(Modifier.fillMaxWidth(0.5f)),
+        onClick = onClick,
+        enabled = !isLoading,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (subscribed) contentColor else Color.Transparent,
+            contentColor = if (subscribed) mainColor else contentColor
+        ),
+        shape = CircleShape,
+        border = if (subscribed) null else BorderStroke(2.dp, contentColor),
+    ) {
+        if (!isLoading) {
+            Text(
+                modifier = Modifier.padding(horizontal = 28.dp, vertical = 8.dp),
+                text = if (subscribed) "SUSCRIPTO" else "SUSCRIBIRME",
+                color = if (subscribed) mainColor.copy(alpha = 0.7f) else contentColor
+            )
+        } else {
+            CircularProgressIndicator()
+        }
+    }
 }
 
 @Composable
@@ -115,10 +159,13 @@ private fun MovieDescription(movie: Movie, contentColor: Color) {
 
 @Composable
 private fun MovieTitleAndYear(selectedMovie: Movie, contentColor: Color) {
-    Column( modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 16.dp).padding(horizontal = 24.dp),
-    horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+            .padding(horizontal = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             text = selectedMovie.title ?: "",
             color = contentColor,

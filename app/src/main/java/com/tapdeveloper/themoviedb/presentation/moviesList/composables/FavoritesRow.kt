@@ -40,9 +40,6 @@ fun FavoritesLazyRow(
         EmptySubscriptionList()
     } else {
         LazyRow(modifier = modifier) {
-            item {
-                EmptySubscriptionList()
-            }
             if (isLoading) {
                 item {
                     Box(Modifier.fillMaxSize()) {

@@ -33,7 +33,7 @@ class MoviesViewmodel @Inject constructor(
     /** Observables for favorites*/
     var favoritesMovies by mutableStateOf(listOf<Movie>())
     var isLoadingRow by mutableStateOf(false)
-    var rowError by mutableStateOf<String?>(null)
+    var rowError by mutableStateOf<String?>(null) // todo pero no muestro errores
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         columnError = throwable.message
@@ -81,6 +81,7 @@ class MoviesViewmodel @Inject constructor(
 
     fun selectMovie(movie: Movie) {
         selectedMovie = movie
+        isMovieOnFavorites()
     }
 
     fun loadNextMovies() {
@@ -89,6 +90,62 @@ class MoviesViewmodel @Inject constructor(
         }
     }
 
+    fun getFavoritesMovies(){
+        isLoadingRow = true
+        viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
+            when (val result = repository.getFavoritesMovies()) {
+                is Resource.Success -> {
+                    isLoadingRow = false
+                    favoritesMovies = result.data ?: emptyList()
+                }
+                is Resource.Error -> {
+                    isLoadingRow = false
+                    rowError = result.message
+                }
+            }
+        }
+    }
+
     fun shouldFetchMoreMovies(actualIndex: Int): Boolean =
         (actualIndex >= moviesResponse.movies.lastIndex && !endReached && !isLoadingColum)
+
+    private fun isMovieOnFavorites() {
+        viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
+            val result = repository.isMovieFavorited(selectedMovie)
+            if (result is Resource.Success){
+                selectedMovie.wasSubscribed = result.data ?: false
+            } else {
+                selectedMovie.wasSubscribed = false
+            }
+            isLoadingRow = false
+        }
+    }
+
+    fun addOrRemoveFavorites(){
+        isLoadingRow = true
+        viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
+            isMovieOnFavorites()
+            if (selectedMovie.wasSubscribed){
+                removeMovie(selectedMovie)
+            }
+            else {
+                addMovie(selectedMovie)
+            }
+            isMovieOnFavorites()
+        }
+    }
+
+    private suspend fun addMovie(movie: Movie) {
+        if (repository.addMovieToFavorites(movie)) {
+            favoritesMovies = favoritesMovies.plus(movie)
+        }
+
+    }
+
+    private suspend fun removeMovie(movie: Movie) {
+        repository.removeMovieFromFavorites(movie)
+        favoritesMovies = favoritesMovies.minus(movie)
+        // todo bug cuando hay un item ya al iniciar, si saco fvorito ese, no sale de la lista y si lo agrego
+        // se duplica
+    }
 }

@@ -1,5 +1,8 @@
 package com.tapdeveloper.themoviedb.data.repository
 
+import com.tapdeveloper.themoviedb.data.db.MovieDatabase
+import com.tapdeveloper.themoviedb.data.mappers.toEntity
+import com.tapdeveloper.themoviedb.data.mappers.toMovie
 import com.tapdeveloper.themoviedb.data.mappers.toMoviesListResponse
 import com.tapdeveloper.themoviedb.data.remote.api.MovieApi
 import com.tapdeveloper.themoviedb.domain.model.Movie
@@ -12,8 +15,12 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class MovieRepoImpl @Inject constructor(
-    private val api: MovieApi
+    private val api: MovieApi,
+    private val db: MovieDatabase
 ) : MovieRepository {
+
+    private val favoritesMovieDao = db.favoritesMoviesDao
+
     override suspend fun getMovies(page: Int?): Resource<MoviesListResponse> =
         withContext(Dispatchers.IO) {
             return@withContext try {
@@ -26,27 +33,48 @@ class MovieRepoImpl @Inject constructor(
             }
         }
 
-    override suspend fun getMovieDetail(movieId: Long): Resource<Movie> {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun searchMovies(query: String, page: Int?): Resource<MoviesListResponse> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun isMovieSubscribed(movie: Movie): Resource<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun isMovieFavorited(movie: Movie): Resource<Boolean> =
+        movie.id?.let { id ->
+            withContext(Dispatchers.IO) {
+                return@withContext try {
+                    Resource.Success(
+                        data = favoritesMovieDao.getMovie(id)?.toMovie()?.wasSubscribed ?: false
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Resource.Error(e.message ?: "An unknown error has ocurred")
+                }
+            }
+        } ?: run {
+            return Resource.Error("No id for ${movie.title}")
+        }
+
+
+    override suspend fun getFavoritesMovies(): Resource<List<Movie>> =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                Resource.Success(
+                    data = favoritesMovieDao.getAllMovies().map { it.toMovie() }
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Resource.Error(e.message ?: "An unknown error has ocurred")
+            }
+        }
+
+    override suspend fun addMovieToFavorites(movie: Movie): Boolean {
+        return withContext(Dispatchers.IO) {
+            favoritesMovieDao.insertMovie(movie.toEntity()) >= 0
+        }
     }
 
-    override suspend fun getSubscribedMovies(): Resource<List<Movie>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun subscribeMovie(movie: Movie): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun unsubscribeMovie(movie: Movie) {
-        TODO("Not yet implemented")
+    override suspend fun removeMovieFromFavorites(movie: Movie) {
+        withContext(Dispatchers.IO) {
+            favoritesMovieDao.deleteMovie(movie.toEntity())
+        }
     }
 }

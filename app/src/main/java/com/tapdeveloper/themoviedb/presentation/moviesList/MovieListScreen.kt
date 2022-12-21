@@ -1,5 +1,6 @@
 package com.tapdeveloper.themoviedb.presentation.moviesList
 
+import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +19,7 @@ import com.tapdeveloper.themoviedb.presentation.moviesList.composables.Paginatio
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMovieCard
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMoviesColumnTitle
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.SubscribedMoviesRowTitle
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.TopSearchBar
 import com.tapdeveloper.themoviedb.presentation.navigation.Screen
 
 @Composable
@@ -29,7 +31,33 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
         topBar = {
-
+            with(viewModel) {
+                TopSearchBar(
+                    title = "The Movie DB",
+                    isSearching = isSearching,
+                    searchQuery = searchQuery,
+                    onQueryChange = {
+                        Log.d("TAG", "onQueryChange: $it")
+                        searchQuery = it
+                    },
+                    cancelSearch = {
+                        Log.d("TAG", "cancelSearch")
+                        isSearching = false
+//                        cancelSearch()
+//                        coroutineScope.launch {
+//                            scrollState.animateScrollToItem(index = 0)
+//                        }
+                    },
+                    onClickSearchIcon = {
+                        Log.d("TAG", "onClickSearchIcon")
+                        isSearching = true
+                    },
+                    onDeleteSearch = {
+                        Log.d("TAG", "onDeleteSearch")
+                        searchQuery = ""
+                    }
+                )
+            }
         }
     ) { padding ->
         LazyColumn(
@@ -56,7 +84,7 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                 RecommendedMoviesColumnTitle()
             }
 
-            itemsIndexed(viewModel.moviesResponse.movies) {  index, movie ->
+            itemsIndexed(viewModel.moviesResponse.movies) { index, movie ->
                 if (viewModel.shouldFetchMoreMovies(index))
                     viewModel.loadNextMovies()
 

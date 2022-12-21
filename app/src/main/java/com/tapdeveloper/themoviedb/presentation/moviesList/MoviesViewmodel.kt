@@ -24,8 +24,10 @@ class MoviesViewmodel @Inject constructor(
     var moviesResponse by mutableStateOf(MoviesListResponse())
     var selectedMovie by mutableStateOf(Movie())
     var isLoadingColum by mutableStateOf(false)
-
     var columnError by mutableStateOf<String?>(null)
+
+    var isSearching by mutableStateOf(false)
+    var searchQuery by mutableStateOf("")
 
     var endReached by mutableStateOf(false)
     private var pageKey: Int? = 1

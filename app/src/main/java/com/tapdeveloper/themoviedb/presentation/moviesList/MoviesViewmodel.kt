@@ -68,9 +68,7 @@ class MoviesViewmodel @Inject constructor(
         isLoadingColum = true
 
         when (
-            val result = repository.getMovies(
-                page
-            )
+            val result = repository.getMovies(page)
         ) {
             is Resource.Success -> {
                 isLoadingColum = false

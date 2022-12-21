@@ -148,7 +148,7 @@ fun CustomSearchBox(
     iconTint: Color,
     onDelete: () -> Unit,
     padding: Dp,
-    innerTextField: @Composable() () -> Unit
+    innerTextField: @Composable () -> Unit
 ) {
     Row(
         modifier = Modifier.padding(top = padding, bottom = padding, end = padding),

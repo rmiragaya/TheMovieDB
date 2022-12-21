@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -60,7 +61,7 @@ fun FavoritesLazyRow(
 fun EmptySubscriptionList() {
     Card(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.horizontal_margin)) // todo meter dimen
             .fillMaxWidth()
             .height(140.dp),
         shape = Shapes.medium,
@@ -73,7 +74,7 @@ fun EmptySubscriptionList() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Aun no tienes seleccionados favoritos",
+                text = stringResource(R.string.no_favorites),
                 style = MaterialTheme.typography.body1,
                 color = Purple500
             )

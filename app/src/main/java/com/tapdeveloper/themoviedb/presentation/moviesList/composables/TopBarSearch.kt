@@ -32,27 +32,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.tapdeveloper.themoviedb.R
+import com.tapdeveloper.themoviedb.presentation.moviesList.MoviesViewmodel
 import com.tapdeveloper.themoviedb.ui.theme.Grey200
 import com.tapdeveloper.themoviedb.ui.theme.Grey300
 import com.tapdeveloper.themoviedb.ui.theme.White
 
 @Composable
+//todo pasar todos abajo, sacarlos del constructor
 fun TopSearchBar(
-    title: String,
-    modifier: Modifier = Modifier,
-    isSearching: Boolean,
-    searchQuery: String,
-    onQueryChange: (String) -> Unit,
+    viewmodel: MoviesViewmodel,
     cancelSearch: () -> Unit,
-    onClickSearchIcon: () -> Unit,
-    onDeleteSearch: () -> Unit
 ) {
     TopAppBar(
-        modifier = modifier
+        modifier = Modifier
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -61,11 +59,11 @@ fun TopSearchBar(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (!isSearching) {
-                    SearchIcon(onClickSearchIcon, White)
+                if (!viewmodel.isSearching) {
+                    SearchIcon(White) { viewmodel.isSearching = true }
                     Text(
                         modifier = Modifier.padding(horizontal = 12.dp),
-                        text = title,
+                        text = stringResource(R.string.toolbar_title),
                         color = White
                     )
                 } else {
@@ -73,9 +71,12 @@ fun TopSearchBar(
                         modifier = Modifier
                             .padding(start = 16.dp, bottom = 12.dp)
                             .fillMaxWidth(0.8f),
-                        value = searchQuery,
-                        onValueChange = onQueryChange,
-                        onDelete = onDeleteSearch,
+                        value = viewmodel.searchQuery,
+                        onValueChange = {
+                            viewmodel.searchQuery = it
+                            viewmodel.searchMovies()
+                        },
+                        onDelete = { viewmodel.searchQuery = "" },
                         placeholder = "Buscar"
                     )
                     Text(
@@ -194,7 +195,7 @@ fun CustomSearchBox(
 }
 
 @Composable
-fun SearchIcon(onClick: () -> Unit, color: Color) {
+fun SearchIcon(color: Color, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(imageVector = Icons.Rounded.Search, contentDescription = null, tint = color)
     }

@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SubscribedMoviesRowTitle() {
+fun FavoritesMoviesRowTitle() {
     Text(
         modifier = Modifier.padding(16.dp),
-        text = "FAVORITOS"
+        text = "FAVORITOS" // todo a string
     )
 }
 
@@ -22,6 +22,6 @@ fun RecommendedMoviesColumnTitle() {
             top = 20.dp,
             bottom = 16.dp
         ),
-        text = "RECOMENDADAS"
+        text = "RECOMENDADAS" // todo a string
     )
 }

@@ -1,5 +1,10 @@
 package com.tapdeveloper.themoviedb.presentation.moviesList
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,19 +16,18 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesLazyRow
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.PaginationLoading
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMovieCard
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMoviesColumnTitle
-import com.tapdeveloper.themoviedb.presentation.moviesList.composables.SubscribedMoviesRowTitle
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesMoviesRowTitle
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.TopSearchBar
 import com.tapdeveloper.themoviedb.presentation.navigation.Screen
 import kotlinx.coroutines.launch
 
+// todo animar/sacar favoritos cuando estoy buscando algo en el search
 @Composable
 fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
 
@@ -35,25 +39,14 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
         topBar = {
             with(viewModel) {
                 TopSearchBar(
-                    title = stringResource(R.string.toolbar_title),
-                    isSearching = isSearching,
-                    searchQuery = searchQuery,
-                    onQueryChange = {
-                        searchQuery = it
-                        searchMovies()
-                    },
+                    viewmodel = viewModel,
                     cancelSearch = {
+                        searchQuery = ""
                         isSearching = false
                         cancelSearch()
                         coroutineScope.launch {
                             scrollState.animateScrollToItem(index = 0)
                         }
-                    },
-                    onClickSearchIcon = {
-                        isSearching = true
-                    },
-                    onDeleteSearch = {
-                        searchQuery = ""
                     }
                 )
             }
@@ -66,22 +59,9 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
             state = scrollState
         ) {
             item {
-                SubscribedMoviesRowTitle()
-            }
-            item {
-                FavoritesLazyRow(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth(),
-                    movies = viewModel.favoritesMovies,
-                    isLoading = viewModel.isLoadingRow,
-                    onClickMovie = { movieSelected ->
-                        viewModel.selectMovie(movieSelected)
-                        navController.navigate(Screen.MovieDetailScreen.route)
-                    }
-                )
-            }
-            item {
+
+                FavoritesSection(navController, viewModel)
+
                 RecommendedMoviesColumnTitle()
             }
 
@@ -104,3 +84,31 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
         }
     }
 }
+
+@Composable
+fun FavoritesSection(navController: NavController, viewModel: MoviesViewmodel) {
+    AnimatedVisibility(
+        visible = viewModel.searchQuery.isEmpty(),
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically()
+    ) {
+        FavoritesMoviesRowTitle()
+    }
+
+    AnimatedVisibility(
+        visible = viewModel.searchQuery.isEmpty()
+    ){
+        FavoritesLazyRow(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            movies = viewModel.favoritesMovies,
+            isLoading = viewModel.isLoadingRow,
+            onClickMovie = { movieSelected ->
+                viewModel.selectMovie(movieSelected)
+                navController.navigate(Screen.MovieDetailScreen.route)
+            }
+        )
+    }
+}
+

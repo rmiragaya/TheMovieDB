@@ -85,7 +85,7 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
                 MoviePoster(movie = selectedMovie)
                 MovieTitleAndYear(selectedMovie, contentColor)
                 MovieDescription(selectedMovie, contentColor)
-                FavoriteGradientButton(
+                FavoritesButton(
                     subscribed = selectedMovie.wasSubscribed,
                     contentColor = contentColor,
                     mainColor = mainColor,
@@ -105,7 +105,7 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
 }
 
 @Composable
-private fun FavoriteGradientButton(
+private fun FavoritesButton(
     modifier: Modifier = Modifier,
     subscribed: Boolean,
     contentColor: Color,
@@ -113,25 +113,33 @@ private fun FavoriteGradientButton(
     isLoading: Boolean,
     onClick: () -> Unit
 ) {
-    Button(
-        modifier = modifier.then(Modifier.fillMaxWidth(0.5f)),
-        onClick = onClick,
-        enabled = !isLoading,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = if (subscribed) contentColor else Color.Transparent,
-            contentColor = if (subscribed) mainColor else contentColor
-        ),
-        shape = CircleShape,
-        border = if (subscribed) null else BorderStroke(2.dp, contentColor),
-    ) {
-        if (!isLoading) {
-            Text(
-                modifier = Modifier.padding(horizontal = 28.dp, vertical = 8.dp),
-                text = if (subscribed) "SUSCRIPTO" else "SUSCRIBIRME",
-                color = if (subscribed) mainColor.copy(alpha = 0.7f) else contentColor
-            )
-        } else {
-            CircularProgressIndicator()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(bottom = 16.dp),
+        horizontalArrangement = Arrangement.Center
+    ){
+        Button(
+            modifier = modifier.then(Modifier.fillMaxWidth(0.7f)),
+            onClick = onClick,
+            enabled = !isLoading,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = if (subscribed) contentColor else Color.Transparent,
+                contentColor = if (subscribed) mainColor else contentColor
+            ),
+            shape = CircleShape,
+            border = if (subscribed) null else BorderStroke(2.dp, contentColor),
+        ) {
+            if (!isLoading) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 28.dp, vertical = 8.dp),
+                    text = if (subscribed) "Agregado!" else "Agregar a favoritos?",
+                    color = if (subscribed) mainColor.copy(alpha = 0.7f) else contentColor
+                )
+            } else {
+                CircularProgressIndicator()
+            }
         }
     }
 }
@@ -140,8 +148,7 @@ private fun FavoriteGradientButton(
 private fun MovieDescription(movie: Movie, contentColor: Color) {
     Text(
         modifier = Modifier
-            .padding(top = 40.dp, start = 32.dp, end = 32.dp)
-            .layoutId("overview"),
+            .padding(top = 40.dp, start = 32.dp, end = 32.dp),
         text = "OVERVIEW",
         color = contentColor
     )
@@ -169,12 +176,14 @@ private fun MovieTitleAndYear(selectedMovie: Movie, contentColor: Color) {
         Text(
             text = selectedMovie.title ?: "",
             color = contentColor,
-            style = MaterialTheme.typography.h4
+            style = MaterialTheme.typography.h4,
+            textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = selectedMovie.getReleaseYearText(),
-            color = contentColor
+            color = contentColor,
+            textAlign = TextAlign.Center
         )
     }
 }

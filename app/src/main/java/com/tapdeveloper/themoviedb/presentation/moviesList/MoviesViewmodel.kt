@@ -137,15 +137,15 @@ class MoviesViewmodel @Inject constructor(
 
     private suspend fun addMovie(movie: Movie) {
         if (repository.addMovieToFavorites(movie)) {
-            favoritesMovies = favoritesMovies.plus(movie)
+            getFavoritesMovies()
+//            favoritesMovies = favoritesMovies.plus(movie)
         }
 
     }
 
     private suspend fun removeMovie(movie: Movie) {
         repository.removeMovieFromFavorites(movie)
-        favoritesMovies = favoritesMovies.minus(movie)
-        // todo bug cuando hay un item ya al iniciar, si saco fvorito ese, no sale de la lista y si lo agrego
-        // se duplica
+        getFavoritesMovies()
+//        favoritesMovies = favoritesMovies.minus(movie)
     }
 }

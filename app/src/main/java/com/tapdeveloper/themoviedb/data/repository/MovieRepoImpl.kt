@@ -41,9 +41,16 @@ class MovieRepoImpl @Inject constructor(
         movie.id?.let { id ->
             withContext(Dispatchers.IO) {
                 return@withContext try {
-                    Resource.Success(
-                        data = favoritesMovieDao.getMovie(id)?.toMovie()?.wasSubscribed ?: false
-                    )
+                    val isFavorited = favoritesMovieDao.getMovie(id)
+                    if (isFavorited != null){
+                        Resource.Success(
+                            data = true
+                        )
+                    } else {
+                        Resource.Success(
+                            data = false
+                        )
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Resource.Error(e.message ?: "An unknown error has ocurred")

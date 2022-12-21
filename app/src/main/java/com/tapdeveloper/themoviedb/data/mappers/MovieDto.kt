@@ -20,8 +20,7 @@ fun FavoritesMovieEntity.toMovie(): Movie =
         posterPath = posterPath,
         overview = overview,
         title = title,
-        releaseDate = releaseDate,
-        wasSubscribed = true
+        releaseDate = releaseDate
     )
 
 fun Movie.toEntity(): FavoritesMovieEntity =

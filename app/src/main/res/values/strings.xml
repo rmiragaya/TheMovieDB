@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TheMovieDB</string>
     <string name="image_base_url">https://image.tmdb.org/t/p/original/</string>
+    <string name="generic_error">Error generico</string>
+    <string name="no_id">sin id</string>
+    <string name="toolbar_title">The Movie DB</string>
 </resources>

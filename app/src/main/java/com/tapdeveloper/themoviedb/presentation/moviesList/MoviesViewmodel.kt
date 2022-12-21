@@ -26,7 +26,7 @@ class MoviesViewmodel @Inject constructor(
     var moviesResponse by mutableStateOf(MoviesListResponse())
     var selectedMovie by mutableStateOf(Movie())
     var isLoadingColum by mutableStateOf(false)
-    var columnError by mutableStateOf<String?>(null)
+    var columnError by mutableStateOf<String?>(null) // todo mostrar errores
 
     var isSearching by mutableStateOf(false)
     var searchQuery by mutableStateOf("")
@@ -38,7 +38,7 @@ class MoviesViewmodel @Inject constructor(
     /** Observables for favorites*/
     var favoritesMovies by mutableStateOf(listOf<Movie>())
     var isLoadingRow by mutableStateOf(false)
-    var rowError by mutableStateOf<String?>(null) // todo no muestro errores
+    var rowError by mutableStateOf<String?>(null) // todo mostrar errores
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         columnError = throwable.message
@@ -94,7 +94,7 @@ class MoviesViewmodel @Inject constructor(
         searchJob = viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
             isLoadingColum = true
             resetPageKey()
-            delay(500L) // todo pasar a constante
+            delay(COMPLETION_DELAY_MILLISECONDS)
             val searchedMovies = fetchMoviesWithQuery(query).getOrElse {
                 columnError = it.message
             } as List<Movie>
@@ -194,5 +194,9 @@ class MoviesViewmodel @Inject constructor(
 
     private fun resetPageKey() {
         pageKey = 1
+    }
+
+    companion object {
+        private const val COMPLETION_DELAY_MILLISECONDS: Long = 400
     }
 }

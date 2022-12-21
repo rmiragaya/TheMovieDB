@@ -68,7 +68,6 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
     val contentColor = if (mainColor.luminance() >= 0.5f) Black else White
 
     with(viewModel) {
-        // todo add scafold y sacar Box
         Scaffold(
             modifier = Modifier.fillMaxSize()
         ) { padding ->

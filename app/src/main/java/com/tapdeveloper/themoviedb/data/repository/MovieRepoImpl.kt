@@ -1,5 +1,7 @@
 package com.tapdeveloper.themoviedb.data.repository
 
+import android.app.Application
+import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.data.db.MovieDatabase
 import com.tapdeveloper.themoviedb.data.mappers.toEntity
 import com.tapdeveloper.themoviedb.data.mappers.toMovie
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 class MovieRepoImpl @Inject constructor(
     private val api: MovieApi,
-    private val db: MovieDatabase
+    private val db: MovieDatabase,
+    private val appContext: Application,
 ) : MovieRepository {
 
     private val favoritesMovieDao = db.favoritesMoviesDao
@@ -27,7 +30,7 @@ class MovieRepoImpl @Inject constructor(
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            Resource.Error(e.message ?: "An unknown error has ocurred")
+            Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
         }
 
     override suspend fun searchMovies(query: String, page: Int?): Resource<MoviesListResponse> =
@@ -37,7 +40,7 @@ class MovieRepoImpl @Inject constructor(
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            Resource.Error(e.message ?: "An unknown error has ocurred")
+            Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
         }
 
     override suspend fun isMovieFavorites(movie: Movie): Resource<Boolean> =
@@ -56,11 +59,11 @@ class MovieRepoImpl @Inject constructor(
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Resource.Error(e.message ?: "An unknown error has ocurred")
+                    Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
                 }
             }
         } ?: run {
-            return Resource.Error("No id for ${movie.title}")
+            return Resource.Error("${movie.title} ${appContext.getString(R.string.no_id)}")
         }
 
     override suspend fun getFavoritesMovies(): Resource<List<Movie>> =
@@ -71,7 +74,7 @@ class MovieRepoImpl @Inject constructor(
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
-                Resource.Error(e.message ?: "An unknown error has ocurred")
+                Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
             }
         }
 

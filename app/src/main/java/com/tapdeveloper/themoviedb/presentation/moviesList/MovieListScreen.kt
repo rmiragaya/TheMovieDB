@@ -12,8 +12,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesLazyRow
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.PaginationLoading
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMovieCard
@@ -27,23 +29,21 @@ import kotlinx.coroutines.launch
 fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
 
     val scrollState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope() // todo for topbar
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
         topBar = {
             with(viewModel) {
                 TopSearchBar(
-                    title = "The Movie DB",
+                    title = stringResource(R.string.toolbar_title),
                     isSearching = isSearching,
                     searchQuery = searchQuery,
                     onQueryChange = {
-                        Log.d("TAG", "onQueryChange: $it")
                         searchQuery = it
                         searchMovies()
                     },
                     cancelSearch = {
-                        Log.d("TAG", "cancelSearch")
                         isSearching = false
                         cancelSearch()
                         coroutineScope.launch {
@@ -51,11 +51,9 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                         }
                     },
                     onClickSearchIcon = {
-                        Log.d("TAG", "onClickSearchIcon")
                         isSearching = true
                     },
                     onDeleteSearch = {
-                        Log.d("TAG", "onDeleteSearch")
                         searchQuery = ""
                     }
                 )
@@ -96,7 +94,6 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                     viewModel.selectMovie(movie)
                     navController.navigate(Screen.MovieDetailScreen.route)
                 }
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
 

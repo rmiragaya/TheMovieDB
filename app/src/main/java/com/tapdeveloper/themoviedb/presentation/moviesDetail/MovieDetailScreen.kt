@@ -101,7 +101,6 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
             )
         }
     }
-
 }
 
 @Composable
@@ -119,7 +118,7 @@ private fun FavoritesButton(
             .wrapContentHeight()
             .padding(bottom = 16.dp),
         horizontalArrangement = Arrangement.Center
-    ){
+    ) {
         Button(
             modifier = modifier.then(Modifier.fillMaxWidth(0.7f)),
             onClick = onClick,

@@ -63,7 +63,6 @@ class MovieRepoImpl @Inject constructor(
             return Resource.Error("No id for ${movie.title}")
         }
 
-
     override suspend fun getFavoritesMovies(): Resource<List<Movie>> =
         withContext(Dispatchers.IO) {
             return@withContext try {

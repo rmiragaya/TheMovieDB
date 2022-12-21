@@ -1,5 +1,14 @@
 package com.tapdeveloper.themoviedb.data.remote.api
 
+/**
+ * This class manage all the logic of a generic Paginator. Its contains lambdas of all the steps, ej:
+ * [onLoadUpdated]----[onRequest]---------------------[onSuccess]---------[getNextKey]----[onLoadUpdated]
+ * Loading   -> Make request with page x -> Provide success response -> set next page -> stop loading
+ * [onLoadUpdated]----[onRequest]---------------------[onError]--------[onLoadUpdated]
+ * Loading   -> Make request with page x -> Provide error response -> stop loading.
+ * When implemented, you just need to specify what to do on each step in the corresponding lambda,
+ * this class will do the rest.
+ * */
 class DefaultPaginator<Key, Item>(
     private val initialKey: Key,
     private inline val onLoadUpdated: (Boolean) -> Unit,
@@ -32,5 +41,4 @@ class DefaultPaginator<Key, Item>(
     override fun reset() {
         currentKey = initialKey
     }
-
 }

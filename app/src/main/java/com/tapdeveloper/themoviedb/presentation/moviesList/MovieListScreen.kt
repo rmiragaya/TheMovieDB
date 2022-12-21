@@ -72,15 +72,17 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                 SubscribedMoviesRowTitle()
             }
             item {
-                FavoritesLazyRow(modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
+                FavoritesLazyRow(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(),
                     movies = viewModel.favoritesMovies,
                     isLoading = viewModel.isLoadingRow,
                     onClickMovie = { movieSelected ->
                         viewModel.selectMovie(movieSelected)
                         navController.navigate(Screen.MovieDetailScreen.route)
-                    })
+                    }
+                )
             }
             item {
                 RecommendedMoviesColumnTitle()
@@ -103,7 +105,6 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                     PaginationLoading()
                 }
             }
-
         }
     }
 }

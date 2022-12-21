@@ -8,7 +8,7 @@ data class Movie(
     val title: String? = null,
     val releaseDate: String? = null,
     var wasSubscribed: Boolean = true
-){
+) {
     fun getReleaseYearText(): String =
         releaseDate?.take(4) ?: ""
 }

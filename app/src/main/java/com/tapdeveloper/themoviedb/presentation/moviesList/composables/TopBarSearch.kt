@@ -113,7 +113,8 @@ fun SearchBox(
                 .onFocusChanged {
                     if (it.isFocused)
                         onFocus?.let { it() }
-                }),
+                }
+        ),
         value = value,
         onValueChange = onValueChange,
         enabled = enabled,
@@ -191,7 +192,6 @@ fun CustomSearchBox(
         }
     }
 }
-
 
 @Composable
 fun SearchIcon(onClick: () -> Unit, color: Color) {

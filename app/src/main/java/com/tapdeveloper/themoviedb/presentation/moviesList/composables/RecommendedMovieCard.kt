@@ -31,7 +31,7 @@ const val RecommendedMovieCardTestTag = "MovieCard"
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit){
+fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit) {
 
     Card(
         modifier = Modifier
@@ -46,14 +46,15 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit){
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(stringResource(id = R.string.image_base_url)  + movie.posterPath)
+                .data(stringResource(id = R.string.image_base_url) + movie.posterPath)
                 .crossfade(true)
                 .build(),
             colorFilter = ColorFilter.tint(color = DarkBlue, BlendMode.Color),
             placeholder = null,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize())
+            modifier = Modifier.fillMaxSize()
+        )
 
         Box(
             Modifier.padding(16.dp),

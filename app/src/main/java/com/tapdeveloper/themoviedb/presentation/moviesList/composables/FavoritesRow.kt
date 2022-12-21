@@ -28,7 +28,6 @@ import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.domain.model.Movie
 import com.tapdeveloper.themoviedb.ui.theme.Purple500
 import com.tapdeveloper.themoviedb.ui.theme.Shapes
-import com.tapdeveloper.themoviedb.ui.theme.White
 
 @Composable
 fun FavoritesLazyRow(
@@ -55,7 +54,6 @@ fun FavoritesLazyRow(
             }
         }
     }
-
 }
 
 @Composable

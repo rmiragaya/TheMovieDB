@@ -67,9 +67,11 @@ class MoviesViewmodel @Inject constructor(
     private suspend fun getMovies(page: Int?): Result<List<Movie>> {
         isLoadingColum = true
 
-        when (val result = repository.getMovies(
-            page
-        )) {
+        when (
+            val result = repository.getMovies(
+                page
+            )
+        ) {
             is Resource.Success -> {
                 isLoadingColum = false
                 result.data?.movies?.let {
@@ -102,9 +104,11 @@ class MoviesViewmodel @Inject constructor(
     }
 
     private suspend fun fetchMoviesWithQuery(query: String = searchQuery): Result<List<Movie>> {
-        when (val result = repository.searchMovies(
-            query, pageKey
-        )) {
+        when (
+            val result = repository.searchMovies(
+                query, pageKey
+            )
+        ) {
             is Resource.Success -> {
                 isLoadingColum = false
                 result.data?.movies?.let { return Result.success(it) } ?: return Result.failure(

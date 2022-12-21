@@ -106,7 +106,7 @@ fun SearchBox(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     BasicTextField(
-        modifier = modifier.then( // porqque then?
+        modifier = modifier.then( // todo porqque then?
             Modifier
                 .clip(RoundedCornerShape(6.dp))
                 .background(Grey300)

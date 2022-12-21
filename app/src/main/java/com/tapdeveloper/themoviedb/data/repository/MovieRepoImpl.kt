@@ -11,7 +11,6 @@ import com.tapdeveloper.themoviedb.domain.repository.MovieRepository
 import com.tapdeveloper.themoviedb.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
 
 class MovieRepoImpl @Inject constructor(
@@ -22,27 +21,31 @@ class MovieRepoImpl @Inject constructor(
     private val favoritesMovieDao = db.favoritesMoviesDao
 
     override suspend fun getMovies(page: Int?): Resource<MoviesListResponse> =
-        withContext(Dispatchers.IO) {
-            return@withContext try {
-                Resource.Success(
-                    data = api.getMovies(page = page).toMoviesListResponse()
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Resource.Error(e.message ?: "An unknown error has ocurred")
-            }
+        try {
+            Resource.Success(
+                data = api.getMovies(page = page).toMoviesListResponse()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message ?: "An unknown error has ocurred")
         }
 
-    override suspend fun searchMovies(query: String, page: Int?): Resource<MoviesListResponse> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun searchMovies(query: String, page: Int?): Resource<MoviesListResponse> =
+        try {
+            Resource.Success(
+                data = api.searchMovies(query = query, page = page).toMoviesListResponse()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message ?: "An unknown error has ocurred")
+        }
 
-    override suspend fun isMovieFavorited(movie: Movie): Resource<Boolean> =
+    override suspend fun isMovieFavorites(movie: Movie): Resource<Boolean> =
         movie.id?.let { id ->
             withContext(Dispatchers.IO) {
                 return@withContext try {
                     val isFavorited = favoritesMovieDao.getMovie(id)
-                    if (isFavorited != null){
+                    if (isFavorited != null) {
                         Resource.Success(
                             data = true
                         )

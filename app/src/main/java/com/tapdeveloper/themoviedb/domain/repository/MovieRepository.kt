@@ -15,7 +15,7 @@ interface MovieRepository {
         page: Int?
     ): Resource<MoviesListResponse>
 
-    suspend fun isMovieFavorited(movie: Movie): Resource<Boolean>
+    suspend fun isMovieFavorites(movie: Movie): Resource<Boolean>
 
     suspend fun getFavoritesMovies(): Resource<List<Movie>>
 

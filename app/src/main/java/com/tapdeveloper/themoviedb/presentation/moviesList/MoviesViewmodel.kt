@@ -13,6 +13,8 @@ import com.tapdeveloper.themoviedb.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,6 +30,7 @@ class MoviesViewmodel @Inject constructor(
 
     var isSearching by mutableStateOf(false)
     var searchQuery by mutableStateOf("")
+    private var searchJob: Job? = null
 
     var endReached by mutableStateOf(false)
     private var pageKey: Int? = 1
@@ -35,7 +38,7 @@ class MoviesViewmodel @Inject constructor(
     /** Observables for favorites*/
     var favoritesMovies by mutableStateOf(listOf<Movie>())
     var isLoadingRow by mutableStateOf(false)
-    var rowError by mutableStateOf<String?>(null) // todo pero no muestro errores
+    var rowError by mutableStateOf<String?>(null) // todo no muestro errores
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         columnError = throwable.message
@@ -71,13 +74,60 @@ class MoviesViewmodel @Inject constructor(
                 isLoadingColum = false
                 result.data?.movies?.let {
                     return Result.success(it)
-                } ?: return Result.failure( Exception(result.message) )
+                } ?: return Result.failure(Exception(result.message))
             }
             is Resource.Error -> {
                 isLoadingColum = false
                 columnError = result.message
                 return Result.failure(Exception(result.message))
             }
+        }
+    }
+
+    fun searchMovies(query: String = searchQuery) {
+        if (searchJob?.isActive == true) {
+            searchJob?.cancel()
+        }
+
+        searchJob = viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
+            isLoadingColum = true
+            resetPageKey()
+            delay(500L) // todo pasar a constante
+            val searchedMovies = fetchMoviesWithQuery(query).getOrElse {
+                columnError = it.message
+            } as List<Movie>
+            moviesResponse = MoviesListResponse(movies = searchedMovies)
+            pageKey?.plus(1)
+        }
+    }
+
+    private suspend fun fetchMoviesWithQuery(query: String = searchQuery): Result<List<Movie>> {
+        when (val result = repository.searchMovies(
+            query, pageKey
+        )) {
+            is Resource.Success -> {
+                isLoadingColum = false
+                result.data?.movies?.let { return Result.success(it) } ?: return Result.failure(
+                    Exception(result.message)
+                )
+            }
+            is Resource.Error -> {
+                isLoadingColum = false
+                columnError = result.message
+                return Result.failure(Exception(result.message))
+            }
+        }
+    }
+
+    fun cancelSearch() {
+        viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
+            resetPageKey()
+            val searchedMovies = getMovies(pageKey).getOrElse {
+                columnError = it.message
+                isLoadingColum = false
+            } as List<Movie>
+            moviesResponse = MoviesListResponse(movies = searchedMovies)
+            pageKey?.plus(1)
         }
     }
 
@@ -92,7 +142,7 @@ class MoviesViewmodel @Inject constructor(
         }
     }
 
-    fun getFavoritesMovies(){
+    fun getFavoritesMovies() {
         isLoadingRow = true
         viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
             when (val result = repository.getFavoritesMovies()) {
@@ -113,26 +163,16 @@ class MoviesViewmodel @Inject constructor(
 
     private fun isMovieOnFavorites() {
         viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
-            val result = repository.isMovieFavorited(selectedMovie)
-            if (result is Resource.Success){
-                selectedMovie.wasSubscribed = result.data ?: false
-            } else {
-                selectedMovie.wasSubscribed = false
-            }
+            selectedMovie.wasSubscribed = repository.isMovieFavorites(selectedMovie).data ?: false
             isLoadingRow = false
         }
     }
 
-    fun addOrRemoveFavorites(){
+    fun addOrRemoveFavorites() {
         isLoadingRow = true
         viewModelScope.launch(Dispatchers.Main + coroutineExceptionHandler) {
             isMovieOnFavorites()
-            if (selectedMovie.wasSubscribed){
-                removeMovie(selectedMovie)
-            }
-            else {
-                addMovie(selectedMovie)
-            }
+            if (selectedMovie.wasSubscribed) removeMovie(selectedMovie) else addMovie(selectedMovie)
             isMovieOnFavorites()
         }
     }
@@ -140,14 +180,15 @@ class MoviesViewmodel @Inject constructor(
     private suspend fun addMovie(movie: Movie) {
         if (repository.addMovieToFavorites(movie)) {
             getFavoritesMovies()
-//            favoritesMovies = favoritesMovies.plus(movie)
         }
-
     }
 
     private suspend fun removeMovie(movie: Movie) {
         repository.removeMovieFromFavorites(movie)
         getFavoritesMovies()
-//        favoritesMovies = favoritesMovies.minus(movie)
+    }
+
+    private fun resetPageKey() {
+        pageKey = 1
     }
 }

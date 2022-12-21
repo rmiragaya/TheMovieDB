@@ -21,6 +21,7 @@ import com.tapdeveloper.themoviedb.presentation.moviesList.composables.Recommend
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.SubscribedMoviesRowTitle
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.TopSearchBar
 import com.tapdeveloper.themoviedb.presentation.navigation.Screen
+import kotlinx.coroutines.launch
 
 @Composable
 fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
@@ -39,14 +40,15 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                     onQueryChange = {
                         Log.d("TAG", "onQueryChange: $it")
                         searchQuery = it
+                        searchMovies()
                     },
                     cancelSearch = {
                         Log.d("TAG", "cancelSearch")
                         isSearching = false
-//                        cancelSearch()
-//                        coroutineScope.launch {
-//                            scrollState.animateScrollToItem(index = 0)
-//                        }
+                        cancelSearch()
+                        coroutineScope.launch {
+                            scrollState.animateScrollToItem(index = 0)
+                        }
                     },
                     onClickSearchIcon = {
                         Log.d("TAG", "onClickSearchIcon")

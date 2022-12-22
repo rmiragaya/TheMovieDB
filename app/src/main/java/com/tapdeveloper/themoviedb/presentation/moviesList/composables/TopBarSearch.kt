@@ -50,6 +50,8 @@ import com.tapdeveloper.themoviedb.ui.theme.White
 const val topSearchBarTag = "topSearchBarTag"
 @VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val searchIconTag = "searchIconTag"
+@VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
+const val searchBox = "searchBox"
 
 @Composable
 fun TopSearchBar(
@@ -78,14 +80,15 @@ fun TopSearchBar(
                         SearchBox(
                             modifier = Modifier
                                 .padding(start = 16.dp, bottom = 12.dp)
-                                .fillMaxWidth(0.8f),
+                                .fillMaxWidth(0.8f)
+                                .testTag(searchBox),
                             value = searchQuery,
                             onValueChange = {
                                 searchQuery = it
                                 searchMovies()
                             },
                             onDelete = { searchQuery = "" },
-                            placeholder = "Buscar"
+                            placeholder = stringResource(R.string.search)
                         )
                         Text(
                             modifier = Modifier
@@ -96,7 +99,7 @@ fun TopSearchBar(
                                     onCancelSeacrh()
                                 }
                                 .padding(start = 12.dp, bottom = 12.dp),
-                            text = "Cancel",
+                            text = stringResource(R.string.cancel),
                             color = White
                         )
                     }
@@ -121,7 +124,7 @@ fun SearchBox(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     BasicTextField(
-        modifier = modifier.then( // todo porqque then?
+        modifier = modifier.then(
             Modifier
                 .clip(RoundedCornerShape(6.dp))
                 .background(Grey300)

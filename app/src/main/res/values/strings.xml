@@ -11,4 +11,6 @@
     <string name="overview">OVERVIEW</string>
     <string name="favorites">FAVORITOS</string>
     <string name="recommended">RECOMENDADAS</string>
+    <string name="cancel">Cancel</string>
+    <string name="search">Buscar</string>
 </resources>

@@ -26,7 +26,7 @@ class MoviesViewmodel @Inject constructor(
     var moviesResponse by mutableStateOf(MoviesListResponse())
     var selectedMovie by mutableStateOf(Movie())
     var isLoadingColum by mutableStateOf(false)
-    var columnError by mutableStateOf<String?>(null) // todo mostrar errores
+    var columnError by mutableStateOf<String?>(null)
 
     var isSearching by mutableStateOf(false)
     var searchQuery by mutableStateOf("")
@@ -38,7 +38,7 @@ class MoviesViewmodel @Inject constructor(
     /** Observables for favorites*/
     var favoritesMovies by mutableStateOf(listOf<Movie>())
     var isLoadingRow by mutableStateOf(false)
-    var rowError by mutableStateOf<String?>(null) // todo mostrar errores
+    var rowError by mutableStateOf<String?>(null)
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         columnError = throwable.message

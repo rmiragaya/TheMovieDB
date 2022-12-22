@@ -1,5 +1,6 @@
 package com.tapdeveloper.themoviedb.presentation.moviesList
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -16,6 +17,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesLazyRow
@@ -32,6 +34,7 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
 
     val scrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
@@ -73,6 +76,14 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
             item {
                 if (viewModel.isLoadingColum) {
                     PaginationLoading()
+                }
+                if (!viewModel.columnError.isNullOrEmpty()) {
+                    Toast.makeText(context, viewModel.columnError, Toast.LENGTH_SHORT).show()
+                    viewModel.columnError = ""
+                }
+                if (!viewModel.rowError.isNullOrEmpty()) {
+                    Toast.makeText(context, viewModel.rowError, Toast.LENGTH_SHORT).show()
+                    viewModel.rowError = ""
                 }
             }
         }

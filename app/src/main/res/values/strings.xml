@@ -9,4 +9,6 @@
     <string name="added">Agregado!</string>
     <string name="add">Agregar a favoritos?</string>
     <string name="overview">OVERVIEW</string>
+    <string name="favorites">FAVORITOS</string>
+    <string name="recommended">RECOMENDADAS</string>
 </resources>

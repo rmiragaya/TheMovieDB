@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,9 @@ import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.domain.model.Movie
 import com.tapdeveloper.themoviedb.ui.theme.Purple500
 import com.tapdeveloper.themoviedb.ui.theme.Shapes
+
+const val favoritedMovieCardTag = "favoritedMovieCardTag"
+const val favoritedEmptyListTag = "favoritedEmptyListTag"
 
 @Composable
 fun FavoritesLazyRow(
@@ -63,7 +67,8 @@ fun EmptySubscriptionList() {
         modifier = Modifier
             .padding(horizontal = dimensionResource(id = R.dimen.horizontal_margin))
             .fillMaxWidth()
-            .height(140.dp),
+            .height(140.dp)
+            .testTag(favoritedEmptyListTag),
         shape = Shapes.medium,
         backgroundColor = Color.LightGray,
         elevation = 4.dp
@@ -88,7 +93,8 @@ fun FavoritesMovieCard(movie: Movie, onClick: (Movie) -> Unit) {
     Card(
         modifier = Modifier
             .width(dimensionResource(id = R.dimen.favorite_card_width))
-            .height(dimensionResource(id = R.dimen.favorite_card_height)),
+            .height(dimensionResource(id = R.dimen.favorite_card_height))
+            .testTag(favoritedMovieCardTag),
         elevation = 4.dp,
         onClick = {
             onClick(movie)

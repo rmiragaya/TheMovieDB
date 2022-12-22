@@ -24,23 +24,27 @@ class MovieRepoImpl @Inject constructor(
     private val favoritesMovieDao = db.favoritesMoviesDao
 
     override suspend fun getMovies(page: Int?): Resource<MoviesListResponse> =
-        try {
-            Resource.Success(
-                data = api.getMovies(page = page).toMoviesListResponse()
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                Resource.Success(
+                    data = api.getMovies(page = page).toMoviesListResponse()
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
+            }
         }
 
     override suspend fun searchMovies(query: String, page: Int?): Resource<MoviesListResponse> =
-        try {
-            Resource.Success(
-                data = api.searchMovies(query = query, page = page).toMoviesListResponse()
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                Resource.Success(
+                    data = api.searchMovies(query = query, page = page).toMoviesListResponse()
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Resource.Error(e.message ?: appContext.getString(R.string.generic_error))
+            }
         }
 
     override suspend fun isMovieFavorites(movie: Movie): Resource<Boolean> =

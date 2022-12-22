@@ -48,6 +48,7 @@ import com.tapdeveloper.themoviedb.ui.theme.White
 
 @VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val topSearchBarTag = "topSearchBarTag"
+@VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val searchIconTag = "searchIconTag"
 
 @Composable

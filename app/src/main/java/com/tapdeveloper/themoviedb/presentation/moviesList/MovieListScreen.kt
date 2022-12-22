@@ -19,7 +19,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesLazyRow

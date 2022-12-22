@@ -1,5 +1,6 @@
 package com.tapdeveloper.themoviedb.presentation.moviesList.composables
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +32,9 @@ import com.tapdeveloper.themoviedb.domain.model.Movie
 import com.tapdeveloper.themoviedb.ui.theme.Purple500
 import com.tapdeveloper.themoviedb.ui.theme.Shapes
 
+@VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val favoritedMovieCardTag = "favoritedMovieCardTag"
+@VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val favoritedEmptyListTag = "favoritedEmptyListTag"
 
 @Composable

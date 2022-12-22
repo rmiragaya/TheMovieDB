@@ -24,7 +24,7 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
         buildConfigField "String", "API_KEY", "\"${properties.getProperty("API_KEY")}\""
-        resValue "string", "api_key", "\"${properties.getProperty("API_KEY")}\"" // todo porque era esto?
+//        resValue "string", "api_key", "\"${properties.getProperty("API_KEY")}\"" // todo porque era esto?
         buildConfigField "String", "BASE_API_URL", "\"https://api.themoviedb.org/3/\""
     }
 

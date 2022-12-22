@@ -9,4 +9,12 @@ object MoviesListMock {
 
     fun getListSize(): Int =
         4
+
+    fun getSelectedMovie(): Movie =
+        Movie(
+            id = 12345L,
+            overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            title = "Title Movie",
+            releaseDate = "11/12/1987"
+        )
 }

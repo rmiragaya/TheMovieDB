@@ -44,48 +44,53 @@ import com.tapdeveloper.themoviedb.ui.theme.Grey300
 import com.tapdeveloper.themoviedb.ui.theme.White
 
 @Composable
-//todo pasar todos abajo, sacarlos del constructor
 fun TopSearchBar(
     viewmodel: MoviesViewmodel,
-    cancelSearch: () -> Unit,
+    onCancelSeacrh: () -> Unit,
 ) {
     TopAppBar(
         modifier = Modifier
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+        with(viewmodel){
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom
             ) {
-                if (!viewmodel.isSearching) {
-                    SearchIcon(White) { viewmodel.isSearching = true }
-                    Text(
-                        modifier = Modifier.padding(horizontal = 12.dp),
-                        text = stringResource(R.string.toolbar_title),
-                        color = White
-                    )
-                } else {
-                    SearchBox(
-                        modifier = Modifier
-                            .padding(start = 16.dp, bottom = 12.dp)
-                            .fillMaxWidth(0.8f),
-                        value = viewmodel.searchQuery,
-                        onValueChange = {
-                            viewmodel.searchQuery = it
-                            viewmodel.searchMovies()
-                        },
-                        onDelete = { viewmodel.searchQuery = "" },
-                        placeholder = "Buscar"
-                    )
-                    Text(
-                        modifier = Modifier
-                            .clickable { cancelSearch() }
-                            .padding(start = 12.dp, bottom = 12.dp),
-                        text = "Cancel",
-                        color = White
-                    )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (!isSearching) {
+                        SearchIcon(White) { isSearching = true }
+                        Text(
+                            modifier = Modifier.padding(horizontal = 12.dp),
+                            text = stringResource(R.string.toolbar_title),
+                            color = White
+                        )
+                    } else {
+                        SearchBox(
+                            modifier = Modifier
+                                .padding(start = 16.dp, bottom = 12.dp)
+                                .fillMaxWidth(0.8f),
+                            value = searchQuery,
+                            onValueChange = {
+                                searchQuery = it
+                                searchMovies()
+                            },
+                            onDelete = { searchQuery = "" },
+                            placeholder = "Buscar"
+                        )
+                        Text(
+                            modifier = Modifier
+                                .clickable {
+                                    searchQuery = ""
+                                    isSearching = false
+                                    cancelSearch()
+                                    onCancelSeacrh() }
+                                .padding(start = 12.dp, bottom = 12.dp),
+                            text = "Cancel",
+                            color = White
+                        )
+                    }
                 }
             }
         }

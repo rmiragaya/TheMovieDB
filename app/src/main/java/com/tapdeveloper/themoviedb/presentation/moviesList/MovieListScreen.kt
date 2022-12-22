@@ -27,7 +27,6 @@ import com.tapdeveloper.themoviedb.presentation.moviesList.composables.TopSearch
 import com.tapdeveloper.themoviedb.presentation.navigation.Screen
 import kotlinx.coroutines.launch
 
-// todo animar/sacar favoritos cuando estoy buscando algo en el search
 @Composable
 fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
 
@@ -37,19 +36,14 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
         topBar = {
-            with(viewModel) {
-                TopSearchBar(
-                    viewmodel = viewModel,
-                    cancelSearch = {
-                        searchQuery = ""
-                        isSearching = false
-                        cancelSearch()
-                        coroutineScope.launch {
-                            scrollState.animateScrollToItem(index = 0)
-                        }
+            TopSearchBar(
+                viewmodel = viewModel,
+                onCancelSeacrh = {
+                    coroutineScope.launch {
+                        scrollState.animateScrollToItem(index = 0)
                     }
-                )
-            }
+                }
+            )
         }
     ) { padding ->
         LazyColumn(

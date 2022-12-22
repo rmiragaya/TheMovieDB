@@ -1,5 +1,6 @@
 package com.tapdeveloper.themoviedb.presentation.moviesList.composables
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -44,13 +46,17 @@ import com.tapdeveloper.themoviedb.ui.theme.Grey200
 import com.tapdeveloper.themoviedb.ui.theme.Grey300
 import com.tapdeveloper.themoviedb.ui.theme.White
 
+@VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
+const val topSearchBarTag = "topSearchBarTag"
+const val searchIconTag = "searchIconTag"
+
 @Composable
 fun TopSearchBar(
     viewmodel: MoviesViewmodel,
     onCancelSeacrh: () -> Unit,
 ) {
     TopAppBar(
-        modifier = Modifier
+        modifier = Modifier.testTag(topSearchBarTag)
     ) {
         with(viewmodel) {
             Column(
@@ -203,7 +209,7 @@ fun CustomSearchBox(
 
 @Composable
 fun SearchIcon(color: Color, onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
+    IconButton(modifier = Modifier.testTag(searchIconTag), onClick = onClick) {
         Icon(imageVector = Icons.Rounded.Search, contentDescription = null, tint = color)
     }
 }

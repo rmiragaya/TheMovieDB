@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -35,7 +36,7 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit) {
 
     Card(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.horizontal_margin))
             .fillMaxWidth()
             .height(152.dp)
             .testTag(RecommendedMovieCardTestTag),
@@ -57,7 +58,7 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit) {
         )
 
         Box(
-            Modifier.padding(16.dp),
+            Modifier.padding(dimensionResource(id = R.dimen.horizontal_margin)),
             contentAlignment = Alignment.BottomStart
         ) {
             Text(

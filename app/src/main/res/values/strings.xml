@@ -5,4 +5,8 @@
     <string name="no_id">sin id</string>
     <string name="toolbar_title">The Movie DB</string>
     <string name="no_favorites">Aun no tienes seleccionados favoritos</string>
+    <string name="back">Ir atrás</string>
+    <string name="added">Agregado!</string>
+    <string name="add">Agregar a favoritos?</string>
+    <string name="overview">OVERVIEW</string>
 </resources>

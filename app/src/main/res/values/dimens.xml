@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="favorite_card_width">92dp</dimen>
+    <dimen name="favorite_card_height">152dp</dimen>
+    <dimen name="spacer">12dp</dimen>
 </resources>

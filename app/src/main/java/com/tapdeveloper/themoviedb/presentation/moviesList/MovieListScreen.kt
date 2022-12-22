@@ -18,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesLazyRow
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesMoviesRowTitle
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.PaginationLoading
@@ -70,7 +72,7 @@ fun MovieListScreen(navController: NavController, viewModel: MoviesViewmodel) {
                     viewModel.selectMovie(movie)
                     navController.navigate(Screen.MovieDetailScreen.route)
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer)))
             }
 
             item {
@@ -105,7 +107,7 @@ fun FavoritesSection(navController: NavController, viewModel: MoviesViewmodel) {
     ) {
         FavoritesLazyRow(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = dimensionResource(id = R.dimen.horizontal_margin))
                 .fillMaxWidth(),
             movies = viewModel.favoritesMovies,
             isLoading = viewModel.isLoadingRow,

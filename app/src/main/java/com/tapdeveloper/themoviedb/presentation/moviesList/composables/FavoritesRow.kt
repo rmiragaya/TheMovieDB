@@ -49,8 +49,8 @@ fun FavoritesLazyRow(
                 }
             } else {
                 items(movies) { movie ->
-                    SubscribedMovieCard(movie, onClickMovie)
-                    Spacer(modifier = Modifier.width(12.dp))
+                    FavoritesMovieCard(movie, onClickMovie)
+                    Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacer)))
                 }
             }
         }
@@ -61,7 +61,7 @@ fun FavoritesLazyRow(
 fun EmptySubscriptionList() {
     Card(
         modifier = Modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.horizontal_margin)) // todo meter dimen
+            .padding(horizontal = dimensionResource(id = R.dimen.horizontal_margin))
             .fillMaxWidth()
             .height(140.dp),
         shape = Shapes.medium,
@@ -84,12 +84,11 @@ fun EmptySubscriptionList() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SubscribedMovieCard(movie: Movie, onClick: (Movie) -> Unit) {
+fun FavoritesMovieCard(movie: Movie, onClick: (Movie) -> Unit) {
     Card(
         modifier = Modifier
-            .width(92.dp)
-            .height(152.dp),
-        shape = Shapes.medium,
+            .width(dimensionResource(id = R.dimen.favorite_card_width))
+            .height(dimensionResource(id = R.dimen.favorite_card_height)),
         elevation = 4.dp,
         onClick = {
             onClick(movie)

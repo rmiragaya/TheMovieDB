@@ -19,10 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesLazyRow
+import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesMoviesRowTitle
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.PaginationLoading
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMovieCard
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.RecommendedMoviesColumnTitle
-import com.tapdeveloper.themoviedb.presentation.moviesList.composables.FavoritesMoviesRowTitle
 import com.tapdeveloper.themoviedb.presentation.moviesList.composables.TopSearchBar
 import com.tapdeveloper.themoviedb.presentation.navigation.Screen
 import kotlinx.coroutines.launch
@@ -91,7 +91,7 @@ fun FavoritesSection(navController: NavController, viewModel: MoviesViewmodel) {
 
     AnimatedVisibility(
         visible = viewModel.searchQuery.isEmpty()
-    ){
+    ) {
         FavoritesLazyRow(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -105,4 +105,3 @@ fun FavoritesSection(navController: NavController, viewModel: MoviesViewmodel) {
         )
     }
 }
-

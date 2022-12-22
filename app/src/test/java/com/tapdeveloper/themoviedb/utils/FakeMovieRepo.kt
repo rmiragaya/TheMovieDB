@@ -11,11 +11,11 @@ class FakeMovieRepo : MovieRepository {
     private val movies = MoviesListMock.getMovies()
 
     override suspend fun getMovies(page: Int?): Resource<MoviesListResponse> {
-       return Resource.Success(data = MoviesListResponse(movies = movies))
+        return Resource.Success(data = MoviesListResponse(movies = movies))
     }
 
     override suspend fun searchMovies(query: String, page: Int?): Resource<MoviesListResponse> {
-       return Resource.Success(data = MoviesListResponse(movies = movies.filter { it.title!!.contains(query) }))
+        return Resource.Success(data = MoviesListResponse(movies = movies.filter { it.title!!.contains(query) }))
     }
 
     override suspend fun isMovieFavorites(movie: Movie): Resource<Boolean> {

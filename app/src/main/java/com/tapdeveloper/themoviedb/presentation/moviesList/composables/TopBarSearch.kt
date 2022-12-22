@@ -51,7 +51,7 @@ fun TopSearchBar(
     TopAppBar(
         modifier = Modifier
     ) {
-        with(viewmodel){
+        with(viewmodel) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Bottom
@@ -85,7 +85,8 @@ fun TopSearchBar(
                                     searchQuery = ""
                                     isSearching = false
                                     cancelSearch()
-                                    onCancelSeacrh() }
+                                    onCancelSeacrh()
+                                }
                                 .padding(start = 12.dp, bottom = 12.dp),
                             text = "Cancel",
                             color = White

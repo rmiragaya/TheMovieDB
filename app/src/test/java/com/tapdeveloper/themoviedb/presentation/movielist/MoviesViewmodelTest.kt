@@ -63,12 +63,13 @@ class MoviesViewmodelTest {
             viewModel.searchMovies(query)
             advanceUntilIdle()
             assertThat(viewModel.moviesResponse.movies).containsExactlyElementsIn(
-                MoviesListMock.getMovies().filter { it.title!!.contains(query) })
+                MoviesListMock.getMovies().filter { it.title!!.contains(query) }
+            )
         }
     }
 
     @Test
-    fun whenSelectingAMovie_ThenTheMovieIsSelected(){
+    fun whenSelectingAMovie_ThenTheMovieIsSelected() {
         val movie = MoviesListMock.getMovies()[0]
         viewModel.selectMovie(movie)
         assertThat(viewModel.selectedMovie).isEqualTo(movie)

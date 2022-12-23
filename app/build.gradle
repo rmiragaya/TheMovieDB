@@ -105,4 +105,7 @@ dependencies {
 
     // Palette
     implementation('androidx.palette:palette:1.0.0')
+
+    //Splash
+    implementation 'androidx.core:core-splashscreen:1.0.0'
 }

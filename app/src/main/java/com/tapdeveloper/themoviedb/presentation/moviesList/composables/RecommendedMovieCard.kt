@@ -50,7 +50,7 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit) {
                 .data(stringResource(id = R.string.image_base_url) + movie.posterPath)
                 .crossfade(true)
                 .build(),
-            colorFilter = ColorFilter.tint(color = DarkBlue, BlendMode.Color),
+            colorFilter = ColorFilter.tint(color = DarkBlue, BlendMode.Modulate),
             placeholder = null,
             contentDescription = null,
             contentScale = ContentScale.Crop,

@@ -1,10 +1,15 @@
 package com.tapdeveloper.themoviedb.presentation.moviesList.composables
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -13,17 +18,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.domain.model.Movie
+import com.tapdeveloper.themoviedb.presentation.moviesDetail.composables.FavoritesButton
 import com.tapdeveloper.themoviedb.ui.theme.DarkBlue
 import com.tapdeveloper.themoviedb.ui.theme.LightBlue
 import com.tapdeveloper.themoviedb.ui.theme.Shapes
@@ -58,6 +66,12 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit) {
         )
 
         Box(
+            Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopEnd
+        ){
+            AddedButton(movie.genreIds.toString())
+        }
+        Box(
             Modifier.padding(dimensionResource(id = R.dimen.horizontal_margin)),
             contentAlignment = Alignment.BottomStart
         ) {
@@ -68,4 +82,45 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit) {
             )
         }
     }
+}
+
+@Composable
+fun AddedButton(genre: String? = null){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Top
+    ){
+        Button(
+            onClick = {  },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Transparent,
+                contentColor = Color.White
+            )
+        ) {
+            genre?.let { movieGenre ->
+                Text(
+                    text = movieGenre
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun RecommendedMovieCardPreview(){
+    val movie = Movie(
+        id = 12345L,
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        title = "Title Movie",
+        releaseDate = "11/12/1987"
+    )
+    RecommendedMovieCard(
+        movie = movie,
+        onClick = {}
+    )
 }

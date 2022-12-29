@@ -29,10 +29,9 @@ fun MovieTitleAndYear(selectedMovie: Movie, contentColor: Color) {
         Text(
             text = selectedMovie.title ?: "",
             color = contentColor,
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.h5,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer)))
         Text(
             text = selectedMovie.getReleaseYearText(),
             color = contentColor,

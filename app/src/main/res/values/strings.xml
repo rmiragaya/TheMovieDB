@@ -6,8 +6,8 @@
     <string name="toolbar_title">The Movie DB</string>
     <string name="no_favorites">Aun no tienes seleccionados favoritos</string>
     <string name="back">Ir atrás</string>
-    <string name="added">Agregado!</string>
-    <string name="add">Agregar a favoritos?</string>
+    <string name="added">SUSCRIPTO</string>
+    <string name="add">SUSCRIBIRME</string>
     <string name="overview">OVERVIEW</string>
     <string name="favorites">FAVORITOS</string>
     <string name="recommended">RECOMENDADAS</string>

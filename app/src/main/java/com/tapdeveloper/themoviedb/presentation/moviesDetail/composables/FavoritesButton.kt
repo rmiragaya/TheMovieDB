@@ -31,7 +31,7 @@ fun FavoritesButton(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(bottom = 16.dp),
+            .padding(top = 16.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         Button(

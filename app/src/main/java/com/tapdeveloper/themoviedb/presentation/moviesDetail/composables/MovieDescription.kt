@@ -27,7 +27,7 @@ fun MovieDescription(movie: Movie, contentColor: Color) {
         textAlign = TextAlign.Start,
         text = movie.overview ?: "",
         color = contentColor,
-        style = MaterialTheme.typography.body1,
+        style = MaterialTheme.typography.body2,
         lineHeight = 30.sp
     )
 }

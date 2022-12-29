@@ -52,7 +52,6 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
             ) {
                 MoviePoster(movie = selectedMovie)
                 MovieTitleAndYear(selectedMovie, contentColor)
-                MovieDescription(selectedMovie, contentColor)
                 FavoritesButton(
                     subscribed = selectedMovie.wasSubscribed,
                     contentColor = contentColor,
@@ -61,6 +60,7 @@ fun MovieDetailScreen(navController: NavController, viewModel: MoviesViewmodel) 
                 ) {
                     addOrRemoveFavorites()
                 }
+                MovieDescription(selectedMovie, contentColor)
             }
             BackButton(
                 modifier = Modifier

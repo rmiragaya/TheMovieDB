@@ -65,12 +65,12 @@ fun RecommendedMovieCard(movie: Movie, onClick: () -> Unit) {
             modifier = Modifier.fillMaxSize()
         )
 
-        Box(
-            Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopEnd
-        ){
-            AddedButton(movie.genreIds.toString())
-        }
+//        Box(
+//            Modifier.fillMaxSize(),
+//            contentAlignment = Alignment.TopEnd
+//        ){
+//            AddedButton(movie.genreIds.toString())
+//        }
         Box(
             Modifier.padding(dimensionResource(id = R.dimen.horizontal_margin)),
             contentAlignment = Alignment.BottomStart

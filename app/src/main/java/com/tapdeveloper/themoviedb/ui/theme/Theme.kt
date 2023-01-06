@@ -7,36 +7,25 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = LightBlue,
-    primaryVariant = DarkBlue,
-    secondary = White,
-    background = Grey800,
+    primary = White,
+    primaryVariant = Grey300,
+    secondary = Purple500,
     surface = Black,
-    onBackground = Grey300,
-    onSurface = Grey500
+    onSurface = Grey500,
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    primary = Black,
+    primaryVariant = Grey300,
+    secondary = Purple500,
+    surface = White,
+    onSurface = Grey500,
 )
 
 @Composable
 fun TheMovieDBTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = DarkColorPalette
-
     MaterialTheme(
-        colors = colors,
+        colors = if (darkTheme) DarkColorPalette else LightColorPalette,
         typography = Typography,
         shapes = Shapes,
         content = content

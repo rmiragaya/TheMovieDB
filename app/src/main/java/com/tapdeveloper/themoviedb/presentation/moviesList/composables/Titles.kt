@@ -2,6 +2,7 @@ package com.tapdeveloper.themoviedb.presentation.moviesList.composables
 
 import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +24,8 @@ fun FavoritesMoviesRowTitle() {
         modifier = Modifier
             .padding(dimensionResource(id = R.dimen.horizontal_margin))
             .testTag(favoritesTitleTag),
-        text = stringResource(R.string.favorites)
+        text = stringResource(R.string.favorites),
+        color = MaterialTheme.colors.primaryVariant
     )
 }
 
@@ -37,6 +39,7 @@ fun RecommendedMoviesColumnTitle() {
                 bottom = 16.dp
             )
             .testTag(recommendedTitleTag),
-        text = stringResource(R.string.recommended)
+        text = stringResource(R.string.recommended),
+        color = MaterialTheme.colors.primaryVariant
     )
 }

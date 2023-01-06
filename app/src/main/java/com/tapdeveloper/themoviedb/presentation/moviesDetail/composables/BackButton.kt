@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
@@ -14,15 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tapdeveloper.themoviedb.R
-import com.tapdeveloper.themoviedb.ui.theme.Black
-import com.tapdeveloper.themoviedb.ui.theme.White
 
 @Composable
 fun BackButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    backgroundColor: Color = Black,
-    contentColor: Color = White
+    backgroundColor: Color = MaterialTheme.colors.surface,
+    contentColor: Color = MaterialTheme.colors.primary
 ) {
     Button(
         modifier = modifier.then(Modifier.size(32.dp)),

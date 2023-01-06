@@ -29,11 +29,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.domain.model.Movie
-import com.tapdeveloper.themoviedb.ui.theme.Purple500
 import com.tapdeveloper.themoviedb.ui.theme.Shapes
 
 @VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val favoritedMovieCardTag = "favoritedMovieCardTag"
+
 @VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val favoritedEmptyListTag = "favoritedEmptyListTag"
 
@@ -84,7 +84,7 @@ fun EmptySubscriptionList() {
             Text(
                 text = stringResource(R.string.no_favorites),
                 style = MaterialTheme.typography.body1,
-                color = Purple500
+                color = MaterialTheme.colors.secondary
             )
         }
     }

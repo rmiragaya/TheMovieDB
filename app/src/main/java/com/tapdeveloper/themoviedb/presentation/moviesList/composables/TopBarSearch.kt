@@ -43,8 +43,6 @@ import androidx.compose.ui.unit.dp
 import com.tapdeveloper.themoviedb.R
 import com.tapdeveloper.themoviedb.presentation.moviesList.MoviesViewmodel
 import com.tapdeveloper.themoviedb.ui.theme.Grey200
-import com.tapdeveloper.themoviedb.ui.theme.Grey300
-import com.tapdeveloper.themoviedb.ui.theme.White
 
 @VisibleForTesting(otherwise = java.lang.reflect.Modifier.PRIVATE)
 const val topSearchBarTag = "topSearchBarTag"
@@ -59,7 +57,8 @@ fun TopSearchBar(
     onCancelSeacrh: () -> Unit,
 ) {
     TopAppBar(
-        modifier = Modifier.testTag(topSearchBarTag)
+        modifier = Modifier.testTag(topSearchBarTag),
+        backgroundColor = Color.Transparent
     ) {
         with(viewmodel) {
             Column(
@@ -70,11 +69,11 @@ fun TopSearchBar(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (!isSearching) {
-                        SearchIcon(White) { isSearching = true }
+                        SearchIcon { isSearching = true }
                         Text(
                             modifier = Modifier.padding(horizontal = 12.dp),
                             text = stringResource(R.string.toolbar_title),
-                            color = White
+                            color = MaterialTheme.colors.primary
                         )
                     } else {
                         SearchBox(
@@ -100,7 +99,7 @@ fun TopSearchBar(
                                 }
                                 .padding(start = 12.dp, bottom = 12.dp),
                             text = stringResource(R.string.cancel),
-                            color = White
+                            color = MaterialTheme.colors.primary
                         )
                     }
                 }
@@ -127,7 +126,7 @@ fun SearchBox(
         modifier = modifier.then(
             Modifier
                 .clip(RoundedCornerShape(6.dp))
-                .background(Grey300)
+                .background(MaterialTheme.colors.primaryVariant)
                 .onFocusChanged {
                     if (it.isFocused)
                         onFocus?.let { it() }
@@ -137,7 +136,7 @@ fun SearchBox(
         onValueChange = onValueChange,
         enabled = enabled,
         textStyle = MaterialTheme.typography.body2.copy(
-            color = White,
+            color = MaterialTheme.colors.primary,
             lineHeight = TextUnit.Unspecified
         ),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -192,7 +191,7 @@ fun CustomSearchBox(
                 if (value.isEmpty()) {
                     Text(
                         text = placeHolder,
-                        style = MaterialTheme.typography.body2.copy(color = White)
+                        style = MaterialTheme.typography.body2.copy(color = MaterialTheme.colors.primary)
                     )
                 }
                 innerTextField()
@@ -212,7 +211,7 @@ fun CustomSearchBox(
 }
 
 @Composable
-fun SearchIcon(color: Color, onClick: () -> Unit) {
+fun SearchIcon(color: Color= MaterialTheme.colors.primary, onClick: () -> Unit) {
     IconButton(modifier = Modifier.testTag(searchIconTag), onClick = onClick) {
         Icon(imageVector = Icons.Rounded.Search, contentDescription = null, tint = color)
     }

@@ -14,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -37,7 +38,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesVendorDatabase(app: Application): MovieDatabase {
+    fun providesVendorDatabase(
+        app: Application
+    ): MovieDatabase {
         return Room.databaseBuilder(
             app,
             MovieDatabase::class.java,

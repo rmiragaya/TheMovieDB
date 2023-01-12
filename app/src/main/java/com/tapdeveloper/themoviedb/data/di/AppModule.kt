@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.tapdeveloper.themoviedb.BuildConfig
 import com.tapdeveloper.themoviedb.data.db.MovieDatabase
 import com.tapdeveloper.themoviedb.data.remote.api.MovieApi
+import com.tapdeveloper.themoviedb.data.repository.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +15,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -24,10 +24,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMovieApi(): MovieApi {
-        val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val keyInterceptor = ApiKeyInterceptor(BuildConfig.API_KEY)
         val httpClient = OkHttpClient.Builder()
-        httpClient.addInterceptor(logging)
+            .addInterceptor(logging)
+            .addInterceptor(keyInterceptor)
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_API_URL)
             .addConverterFactory(GsonConverterFactory.create())

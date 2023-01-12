@@ -211,7 +211,7 @@ fun CustomSearchBox(
 }
 
 @Composable
-fun SearchIcon(color: Color= MaterialTheme.colors.primary, onClick: () -> Unit) {
+fun SearchIcon(color: Color = MaterialTheme.colors.primary, onClick: () -> Unit) {
     IconButton(modifier = Modifier.testTag(searchIconTag), onClick = onClick) {
         Icon(imageVector = Icons.Rounded.Search, contentDescription = null, tint = color)
     }

@@ -19,9 +19,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.loadNextMovies()
-        viewModel.getFavoritesMovies()
-
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 viewModel.moviesResponse.movies.isEmpty()
@@ -33,5 +30,11 @@ class MainActivity : ComponentActivity() {
                 Navigation(navController = rememberNavController())
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadNextMovies()
+        viewModel.getFavoritesMovies()
     }
 }

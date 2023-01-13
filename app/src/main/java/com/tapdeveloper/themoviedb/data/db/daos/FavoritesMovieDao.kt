@@ -3,13 +3,14 @@ package com.tapdeveloper.themoviedb.data.db.daos
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.tapdeveloper.themoviedb.data.db.entities.FavoritesMovieEntity
 
 @Dao
 interface FavoritesMovieDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMovie(movie: FavoritesMovieEntity): Long
 
     @Delete
